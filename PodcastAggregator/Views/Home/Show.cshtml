@@ -1,0 +1,28 @@
+﻿@model PodcastAggregator.Domain.Show
+
+@{
+    ViewBag.Title = "Show";
+}
+
+<h2>@Model.Title</h2>
+<p>Produced by:  @Model.ProducerName, on : @Model.PublicationDate, played: @Model.PlayCount | @Html.ActionLink("Back to Shows", "Index")</p>
+<hr />
+
+<div>
+    <p>
+    
+        <audio class="col-lg-12" controls autoplay>
+            <source src="@Model.Mp3" type="audio/mp3" />
+            Your browser does not support HTML5 audio.
+        </audio>
+    </p>
+    <h4 class="text-center col-lg-12">
+        @Html.ActionLink("Back to Shows", "Index")
+    </h4>
+    <hr />
+    <div>@Html.Raw(Model.Description)</div>
+    
+</div>
+<p class="col-lg-12">
+    @Html.ActionLink("Back to Shows", "Index")
+</p>

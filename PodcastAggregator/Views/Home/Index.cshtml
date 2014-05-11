@@ -1,0 +1,43 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+@model PodcastAggregator.Models.ShowsList
+@using PagedList.Mvc;
+@using PagedList;
+
+<div class="jumbotron">
+    <h1>Podcasts aggregator</h1>
+    <p class="lead">Listen here the latest shows on develpers technology!</p>
+    <div class="col-lg-10 lead">
+        <form class="form-inline " role="search">
+            <div class="form-group col-lg-6 ">
+                <input type="text" name="search" class="form-control" placeholder="Search text ..." value="@Model.Search">
+                <button type="submit" class="btn btn-primary btn-default">Search</button>
+
+            </div>
+
+        </form>
+    </div>
+</div>
+
+@if (Model.Shows.Count() == 0)
+{
+    <div class="row">
+        <div class="col-md-4">
+            <h3>Shows not found!</h3>
+        </div>
+    </div>
+}
+<div class="row">
+    @foreach (var show in Model.Shows)
+    {
+        <div class="col-lg-6 col-md-12">
+            <h3>@Html.ActionLink(show.Title, "Show", new { id = show.Id })</h3>
+            <p>Produced by:  @show.ProducerName, on : @show.PublicationDate</p>
+        </div>
+    }
+</div>
+<div class="row col-lg-12 text-center">
+    @Html.PagedListPager((IPagedList)Model.Shows, page => Url.Action("Index", new { page, Search = Model.Search }))
+</div>
