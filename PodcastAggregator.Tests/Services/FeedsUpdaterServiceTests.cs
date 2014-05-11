@@ -12,6 +12,7 @@ namespace PodcastAggregator.Tests.Services
     public class FeedsUpdaterServiceTests
     {
         [TestMethod]
+        [Ignore]
         public void WillUpdateDB()
         {
             var db = new DataContext();

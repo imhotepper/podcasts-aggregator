@@ -21,10 +21,17 @@ namespace PodcastAggregator.DB
         {
             var connectionString = WebConfigurationManager.AppSettings["MongoDBConnection"];
             connectionString = WebConfigurationManager.ConnectionStrings["MongoDBConnection"].ConnectionString;
-            var client = new MongoClient(connectionString);
+            var client = new MongoClient(GetConnectionString());
             var server = client.GetServer();
             Database = server.GetDatabase(WebConfigurationManager.AppSettings["MongoDBDatabase"]);
            
+        }
+
+        private string GetConnectionString()
+        {
+            return WebConfigurationManager.AppSettings.Get("MONGOHQ_URL") ??
+                  WebConfigurationManager.AppSettings.Get("MONGOLAB_URI") ??
+                  WebConfigurationManager.ConnectionStrings["MongoDBConnection"].ConnectionString; 
         }
 
 
