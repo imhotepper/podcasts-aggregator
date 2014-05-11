@@ -29,6 +29,7 @@ namespace PodcastAggregator.DB
 
         private string GetConnectionString()
         {
+
             return WebConfigurationManager.AppSettings.Get("MONGOHQ_URL") ??
                   WebConfigurationManager.AppSettings.Get("MONGOLAB_URI") ??
                   WebConfigurationManager.ConnectionStrings["MongoDBConnection"].ConnectionString; 
