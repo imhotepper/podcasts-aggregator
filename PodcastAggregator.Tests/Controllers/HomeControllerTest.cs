@@ -9,6 +9,7 @@ using PodcastAggregator.Controllers;
 
 namespace PodcastAggregator.Tests.Controllers
 {
+    [Ignore]
     [TestClass]
     public class HomeControllerTest
     {
