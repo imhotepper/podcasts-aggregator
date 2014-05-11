@@ -1,4 +1,4 @@
 podcasts-aggregator
 ===================
 
-A podcasta aggregator sample running with MVC 5 &amp; MongoDB
+A podcasts aggregator sample running with MVC 5 &amp; MongoDB
