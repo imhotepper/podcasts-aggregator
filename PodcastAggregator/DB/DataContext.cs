@@ -3,6 +3,7 @@ using MongoDB.Driver.Linq;
 using PodcastAggregator.Domain;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Configuration;
@@ -17,10 +18,16 @@ namespace PodcastAggregator.DB
 
         public DataContext()
         {
-            var serverAndDb = new ServerAndDb(GetConnectionString());
-            var client = new MongoClient(serverAndDb.Server);
-            var server = client.GetServer();
-            Database = server.GetDatabase(serverAndDb.Database);
+            try
+            {
+                var serverAndDb = new ServerAndDb(GetConnectionString());
+                var client = new MongoClient(serverAndDb.Server);
+                var server = client.GetServer();
+                Database = server.GetDatabase(serverAndDb.Database);
+            }
+            catch (Exception exp) {
+                Trace.WriteLine("Exception cought: \n " + exp.StackTrace);
+            }
         }
 
         #region Api
@@ -68,12 +75,15 @@ namespace PodcastAggregator.DB
 
         public ServerAndDb(string fullConnectionString)
         {
+            Trace.WriteLine("Preparing url parsing for: " + fullConnectionString);
             if (!string.IsNullOrEmpty(fullConnectionString))
             {
                 var slashIndex = fullConnectionString.LastIndexOf('/');
                 Server = fullConnectionString.Substring(0, slashIndex);
                 if (slashIndex < fullConnectionString.Length)
                     Database = fullConnectionString.Substring(++slashIndex);
+
+                Trace.WriteLine("Parser done! Server: " + Server + ", Db: " + Database);
             }
 
         }
