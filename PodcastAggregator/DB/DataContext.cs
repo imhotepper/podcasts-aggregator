@@ -12,45 +12,25 @@ namespace PodcastAggregator.DB
     public class DataContext
     {
         public MongoDatabase Database;
-
         public MongoCollection<Producer> Producers { get { return Database.GetCollection<Producer>("producers"); } }
-
         public MongoCollection<Show> Shows { get { return Database.GetCollection<Show>("shows"); } }
 
         public DataContext()
         {
-            var connectionString = WebConfigurationManager.AppSettings["MongoDBConnection"];
-            connectionString = WebConfigurationManager.ConnectionStrings["MongoDBConnection"].ConnectionString;
-            var client = new MongoClient(GetConnectionString());
+            var serverAndDb = new ServerAndDb(GetConnectionString());
+            var client = new MongoClient(serverAndDb.Server);
             var server = client.GetServer();
-            Database = server.GetDatabase(WebConfigurationManager.AppSettings["MongoDBDatabase"]);
-           
+            Database = server.GetDatabase(serverAndDb.Database);
         }
 
-        private string GetConnectionString()
+        #region Api
+
+        public IEnumerable<Producer> ActiveProducers()
         {
-
-            return WebConfigurationManager.AppSettings.Get("MONGOHQ_URL") ??
-                  WebConfigurationManager.AppSettings.Get("MONGOLAB_URI") ??
-                  WebConfigurationManager.ConnectionStrings["MongoDBConnection"].ConnectionString; 
+            return Producers.FindAll().Where(x => x.Active == true).OrderBy(x => x.Name);
         }
 
-
-        public IEnumerable<Producer> ActiveProducers
-        {
-            get
-            {
-                return Producers.FindAll().Where(x => x.Active == true).OrderBy(x => x.Name);
-
-            }
-        }
-
-        public void DeleteShows()
-        {
-            this.Shows.RemoveAll();
-        }
-
-        internal IQueryable<Show> ActiveShows(string search)
+        public IQueryable<Show> ActiveShows(string search)
         {
             var shows = Shows.AsQueryable()
                         .Where(x => x.Active);
@@ -59,6 +39,42 @@ namespace PodcastAggregator.DB
                 shows = shows.Where(x => x.Title.ToLower().Contains(search.ToLower()) || x.Description.ToLower().Contains(search.ToLower())).AsQueryable();
 
             return shows.OrderByDescending(x => x.PublicationDate);
+        }
+
+        public void DeleteShows()
+        {
+            this.Shows.RemoveAll();
+        }
+
+        #endregion
+
+        #region Utils
+        private string GetConnectionString()
+        {
+
+            return WebConfigurationManager.AppSettings.Get("MONGOHQ_URL") ??
+                  WebConfigurationManager.AppSettings.Get("MONGOLAB_URI") ??
+                  WebConfigurationManager.ConnectionStrings["MongoDBConnection"].ConnectionString;
+        }
+
+        #endregion
+    }
+
+
+    class ServerAndDb
+    {
+        public string Server { get; set; }
+        public string Database { get; set; }
+
+        public ServerAndDb(string fullConnectionString)
+        {
+            if (!string.IsNullOrEmpty(fullConnectionString))
+            {
+                var slashIndex = fullConnectionString.LastIndexOf('/');
+                Server = fullConnectionString.Substring(0, slashIndex);
+                if (slashIndex < fullConnectionString.Length)
+                    Database = fullConnectionString.Substring(++slashIndex);
+            }
 
         }
     }

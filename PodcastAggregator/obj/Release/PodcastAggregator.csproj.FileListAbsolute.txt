@@ -48,3 +48,4 @@ C:\_TFS\PodcastAggregator\PodcastAggregator\bin\System.Web.Http.xml
 C:\_TFS\PodcastAggregator\PodcastAggregator\bin\System.Web.Http.WebHost.xml
 C:\_TFS\PodcastAggregator\PodcastAggregator\obj\Release\PodcastAggregator.dll
 C:\_TFS\PodcastAggregator\PodcastAggregator\obj\Release\PodcastAggregator.pdb
+C:\_TFS\PodcastAggregator\PodcastAggregator\obj\Release\PodcastAggregator.csprojResolveAssemblyReference.cache

@@ -21,7 +21,8 @@ namespace PodcastAggregator.Controllers
             var updater = new FeedsUpdaterService(rssReaderService, db);
             db.DeleteShows();
 
-            db.Producers.AsQueryable()
+            db.ActiveProducers()
+                .AsQueryable()
                 .ToList()
                 .ForEach(p =>
                 {
