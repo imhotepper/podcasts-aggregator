@@ -79,7 +79,7 @@ namespace PodcastAggregator.DB
             if (!string.IsNullOrEmpty(fullConnectionString))
             {
                 var slashIndex = fullConnectionString.LastIndexOf('/');
-                Server = fullConnectionString.Substring(0, slashIndex);
+                Server = fullConnectionString;
                 if (slashIndex < fullConnectionString.Length)
                     Database = fullConnectionString.Substring(++slashIndex);
 
