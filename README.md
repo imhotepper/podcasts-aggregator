@@ -9,6 +9,6 @@ Inside:
 <ol>
   <li>  Search enabled </li>
   <li>  Pagination enabled </li>
-  <li>  Fedd updater enabled (called via url call for now.) </li>
+  <li>  Feed updater enabled (called via url call for now.) </li>
   <li>  Running on mongo with mongodb C# driver </li>
 </ol>
