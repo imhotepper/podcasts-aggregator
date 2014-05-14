@@ -12,11 +12,11 @@ namespace PodcastAggregator.DB
 {
     public class DataContext
     {
-        public MongoDatabase Database;
+         static MongoDatabase Database;
         public MongoCollection<Producer> Producers { get { return Database.GetCollection<Producer>("producers"); } }
         public MongoCollection<Show> Shows { get { return Database.GetCollection<Show>("shows"); } }
 
-        public DataContext()
+        static DataContext()
         {
             try
             {
@@ -56,7 +56,7 @@ namespace PodcastAggregator.DB
         #endregion
 
         #region Utils
-        private string GetConnectionString()
+        private static string GetConnectionString()
         {
 
             return WebConfigurationManager.AppSettings.Get("MONGOHQ_URL") ??
